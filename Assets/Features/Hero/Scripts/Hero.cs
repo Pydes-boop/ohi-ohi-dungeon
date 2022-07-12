@@ -19,6 +19,7 @@ public class Hero : MonoBehaviour
 
     public void PlayerDefeated(object sender, EventArgs args)
     {
+        AudioManager.instance.Stop("GameOST");
         SceneLoader.LoadGameOver();
     }
 }
