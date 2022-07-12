@@ -58,4 +58,24 @@ public class AudioManager : MonoBehaviour {
         
         sound.source.Stop();
     }
+
+    public void ChangeVolume(string name, float newVolume) {
+        Sound sound = Array.Find(sounds, sound => sound.name == name);
+        if (sound == null) {
+            Debug.LogWarning("Didn't find sound: " + name);
+            return;
+        }
+
+        sound.source.volume = newVolume;
+    }
+
+    public float GetVolume(string name) {
+        Sound sound = Array.Find(sounds, sound => sound.name == name);
+        if (sound == null) {
+            Debug.LogWarning("Didn't find sound: " + name);
+            return 0;
+        }
+
+        return sound.source.volume;
+    }
 }
