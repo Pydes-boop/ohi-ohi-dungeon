@@ -44,7 +44,7 @@ public class EnemyMovement : MonoBehaviour
         {
             speed = originalSpeed - (speedChangeCurve.Evaluate(timer / duration) * originalSpeed * strength * 2);
 
-            yield return new WaitForSecondsRealtime(Time.deltaTime);
+            yield return new WaitForSecondsRealtime(Time.deltaTime);// TODO: should this be yield return null?
             timer += Time.deltaTime;
         }
         

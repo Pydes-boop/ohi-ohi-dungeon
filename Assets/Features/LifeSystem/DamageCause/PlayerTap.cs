@@ -1,4 +1,5 @@
 using System;
+using Features.Pause;
 using UniRx;
 using UnityEngine;
 
@@ -25,6 +26,9 @@ public class PlayerTap : DamageCause
 
     public void DamageCauseSignalDetected(EventArgs args)
     {
+        if (PauseManager.Instance.isPaused.Value)
+            return;
+        
         damageEffect.Trigger(this);
         
         if (args is SensorEventArgs && ((SensorEventArgs)args).associatedPointerPayload.position != null)

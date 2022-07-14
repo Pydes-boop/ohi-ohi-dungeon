@@ -2,6 +2,7 @@ using System;
 using System.Timers;
 using System.Collections;
 using System.Collections.Generic;
+using Features.Pause;
 using UniRx;
 using UnityEngine;
 
@@ -34,6 +35,9 @@ public class PushBackHeroAbility : MonoBehaviour
 
 	public void ActivateAbility(EventArgs args)
 	{
+		if (PauseManager.Instance.isPaused.Value)
+			return;
+		
 		if (GameData.Instance.abilityAvailable.Value == true)
 		{
 			// To the future people: Implement a nicer way to access the enemies here.
