@@ -1,8 +1,5 @@
 using System;
-using System.Timers;
 using System.Collections;
-using System.Collections.Generic;
-using Features.Pause;
 using UniRx;
 using UnityEngine;
 

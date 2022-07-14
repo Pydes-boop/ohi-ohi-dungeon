@@ -1,5 +1,4 @@
 ﻿using System;
-using Features.Pause;
 using UniRx;
 using UnityEngine;
 
