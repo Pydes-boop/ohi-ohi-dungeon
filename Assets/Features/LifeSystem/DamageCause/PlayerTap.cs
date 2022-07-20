@@ -3,9 +3,11 @@ using UniRx;
 using UnityEngine;
 
 [RequireComponent(typeof(Sensor))]
-public class PlayerTap : DamageCause
+public class PlayerTap : DamageCause// TODO remove comments and rename class
 {
-    private Sensor _sensor;
+    // private Sensor _sensor;
+    private Sensor[] _sensors;
+    
     public DamageEffect damageEffect;
     
     [Header("VFX")]
@@ -15,12 +17,15 @@ public class PlayerTap : DamageCause
     private void Awake()
     {
         _camera = Camera.main;
-        _sensor = GetComponent<Sensor>();
+        // _sensor = GetComponent<Sensor>();
+        _sensors = GetComponents<Sensor>();
     }
 
     private void Start()
     {
-        _sensor.SensorTriggered.Subscribe(DamageCauseSignalDetected).AddTo(this);
+        // _sensor.SensorTriggered.Subscribe(DamageCauseSignalDetected).AddTo(this);
+        foreach (var sensor in _sensors)
+            sensor.SensorTriggered.Subscribe(DamageCauseSignalDetected).AddTo(this);
     }
 
     public void DamageCauseSignalDetected(EventArgs args)
