@@ -21,6 +21,7 @@ public class Enemy : MonoBehaviour
     }
     
     public void EnemyDefeated(object sender, EventArgs args) {
+        AudioManager.instance.ChangePitch("Enemies", Random.Range(.7f, 1.3f));
         AudioManager.instance.PlayOneShot("Enemies", deathSounds[Random.Range(0, deathSounds.Length)]);
         Destroy(gameObject);
     }

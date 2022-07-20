@@ -1,6 +1,7 @@
 using System;
 using UniRx;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Sensor))]
 public class PlayerTap : DamageCause
@@ -11,6 +12,9 @@ public class PlayerTap : DamageCause
     [Header("VFX")]
     public GameObject damageVFX;
     private Camera _camera;
+
+    [Header("SFX")] 
+    public AudioClip[] explosionsSFX;
 
     private void Awake()
     {
@@ -31,6 +35,7 @@ public class PlayerTap : DamageCause
         {
             Vector3 pos = _camera.ScreenToWorldPoint(((SensorEventArgs)args).associatedPointerPayload.position);
             Instantiate(damageVFX, new Vector3(pos.x, pos.y, damageVFX.transform.position.z), Quaternion.identity);
+            AudioManager.instance.PlayOneShot("Explosion", explosionsSFX[Random.Range(0, explosionsSFX.Length)]);
         }
     }
 }

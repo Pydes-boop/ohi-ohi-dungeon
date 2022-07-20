@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UniRx;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -32,7 +33,12 @@ public class Coin : MonoBehaviour
     {
         GameData.Instance.IncreaseScore(value);
         animationController.PlayCollectedAnimation();
-        AudioManager.instance.PlayOneShot("Coins", pickupSound);
+        StartCoroutine(delaySFX());
         Destroy(gameObject, 3.0f);
+    }
+
+    IEnumerator delaySFX() {
+        yield return new WaitForSeconds(.2f);
+        AudioManager.instance.PlayOneShot("Coins", pickupSound);
     }
 }
