@@ -16,6 +16,13 @@ public class Sound {
 
     public bool loop;
 
+    [Header("3D Settings")]
+
+    public bool Spatial = false;
+
+    [Range(-1f, 1f)]
+    public float pan = 0;
+
     [HideInInspector]
     public AudioSource source;
 

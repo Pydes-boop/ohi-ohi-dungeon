@@ -26,6 +26,11 @@ public class AudioManager : MonoBehaviour {
             sound.source.volume = sound.volume;
             sound.source.pitch = sound.pitch;
             sound.source.loop = sound.loop;
+
+            if (sound.Spatial) {
+                sound.source.spatialBlend = 1;
+                sound.source.panStereo = sound.pan;
+            }
         }
     }
 
@@ -97,5 +102,24 @@ public class AudioManager : MonoBehaviour {
         }
 
         sound.source.pitch = newPitch;
+    }
+    
+    public void ChangePan(string name, float newPan) {
+        Sound sound = Array.Find(sounds, sound => sound.name == name);
+        if (sound == null) {
+            Debug.LogWarning("Didn't find sound: " + name);
+            return;
+        }
+
+        sound.source.panStereo = newPan;
+    }
+    
+    public void ChangePanRelative(string name, float adjustBy) {
+        Sound sound = Array.Find(sounds, sound => sound.name == name);
+        if (sound == null) {
+            Debug.LogWarning("Didn't find sound: " + name);
+            return;
+        }
+        sound.source.panStereo += adjustBy;
     }
 }
