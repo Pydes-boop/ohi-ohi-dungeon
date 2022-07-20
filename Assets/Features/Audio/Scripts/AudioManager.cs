@@ -59,6 +59,16 @@ public class AudioManager : MonoBehaviour {
         sound.source.Stop();
     }
 
+    public void PlayOneShot(string name, AudioClip clip) {
+        Sound sound = Array.Find(sounds, sound => sound.name == name);
+        if (sound == null) {
+            Debug.LogWarning("Didn't find sound: " + name);
+            return;
+        }
+        
+        sound.source.PlayOneShot(clip);
+    }
+
     public void ChangeVolume(string name, float newVolume) {
         Sound sound = Array.Find(sounds, sound => sound.name == name);
         if (sound == null) {
@@ -77,5 +87,15 @@ public class AudioManager : MonoBehaviour {
         }
 
         return sound.source.volume;
+    }
+    
+    public void ChangePitch(string name, float newPitch) {
+        Sound sound = Array.Find(sounds, sound => sound.name == name);
+        if (sound == null) {
+            Debug.LogWarning("Didn't find sound: " + name);
+            return;
+        }
+
+        sound.source.pitch = newPitch;
     }
 }

@@ -24,6 +24,6 @@ public class SettingsVolumeSlider : MonoBehaviour
     }
     
     public void ChangeVolumeUI(float newVolume) => AudioManager.instance.ChangeVolume("ButtonPress", newVolume);
-    //public void ChangeVolumeEnemy(float newVolume) => 
-    //public void ChangeVolumeCoin(float newVolume) => 
+    public void ChangeVolumeEnemy(float newVolume) => AudioManager.instance.ChangeVolume("Coins", newVolume);
+    public void ChangeVolumeCoin(float newVolume) => AudioManager.instance.ChangeVolume("Enemies", newVolume);
 }
