@@ -9,7 +9,6 @@ public class Coin : MonoBehaviour
     public CoinAnimationController animationController;
     public Sensor collectSensor;
     public int value = 1;
-    public AudioClip pickupSound;
 
     private void Start()
     {
@@ -42,6 +41,6 @@ public class Coin : MonoBehaviour
 
     IEnumerator delaySFX() {
         yield return new WaitForSeconds(.2f);
-        AudioManager.instance.PlayOneShot("Coins", pickupSound);
+        AudioManager.instance.PlayOneShot("Coins");
     }
 }

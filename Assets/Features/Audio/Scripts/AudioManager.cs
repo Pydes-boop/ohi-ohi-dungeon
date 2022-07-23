@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour {
@@ -30,6 +31,11 @@ public class AudioManager : MonoBehaviour {
             if (sound.Spatial) {
                 sound.source.spatialBlend = 1;
                 sound.source.panStereo = sound.pan;
+            }
+
+            if (sound.source.clip == null)
+            {
+                Debug.LogWarning("No Sound Clip found for " + sound.name);
             }
         }
     }
@@ -64,14 +70,14 @@ public class AudioManager : MonoBehaviour {
         sound.source.Stop();
     }
 
-    public void PlayOneShot(string name, AudioClip clip) {
+    public void PlayOneShot(string name) {
         Sound sound = Array.Find(sounds, sound => sound.name == name);
         if (sound == null) {
             Debug.LogWarning("Didn't find sound: " + name);
             return;
         }
-        
-        sound.source.PlayOneShot(clip);
+        if(sound.clip != null)
+            sound.source.PlayOneShot(sound.clip);
     }
 
     public void ChangeVolume(string name, float newVolume) {
@@ -121,5 +127,21 @@ public class AudioManager : MonoBehaviour {
             return;
         }
         sound.source.panStereo += adjustBy;
+    }
+
+    public void StartCharacterStepSounds()
+    {
+        StartCoroutine(stepsWhileWalkingOnScene());
+    }
+    
+    private IEnumerator stepsWhileWalkingOnScene()
+    {
+        AudioManager.instance.ChangePan("Steps", 1);
+        for (int i = 0; i < 8; i++)
+        {
+            ChangePanRelative("Steps", -(1/(float)8));
+            PlayOneShot("Steps");
+            yield return new WaitForSeconds(.4f);
+        }
     }
 }
