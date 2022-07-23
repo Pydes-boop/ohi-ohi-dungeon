@@ -4,9 +4,11 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Sensor))]
-public class PlayerTap : DamageCause
+public class PlayerTap : DamageCause// TODO remove comments and rename class
 {
-    private Sensor _sensor;
+    // private Sensor _sensor;
+    private Sensor[] _sensors;
+    
     public DamageEffect damageEffect;
     
     [Header("VFX")]
@@ -19,16 +21,22 @@ public class PlayerTap : DamageCause
     private void Awake()
     {
         _camera = Camera.main;
-        _sensor = GetComponent<Sensor>();
+        // _sensor = GetComponent<Sensor>();
+        _sensors = GetComponents<Sensor>();
     }
 
     private void Start()
     {
-        _sensor.SensorTriggered.Subscribe(DamageCauseSignalDetected).AddTo(this);
+        // _sensor.SensorTriggered.Subscribe(DamageCauseSignalDetected).AddTo(this);
+        foreach (var sensor in _sensors)
+            sensor.SensorTriggered.Subscribe(DamageCauseSignalDetected).AddTo(this);
     }
 
     public void DamageCauseSignalDetected(EventArgs args)
     {
+        if (PauseManager.Instance.isPaused.Value)
+            return;
+        
         damageEffect.Trigger(this);
         
         if (args is SensorEventArgs && ((SensorEventArgs)args).associatedPointerPayload.position != null)

@@ -23,6 +23,9 @@ public class Coin : MonoBehaviour
 
     public void CollectSignalDetected(EventArgs args)
     {
+        if (PauseManager.Instance.isPaused.Value)
+            return;
+        
         Collect();
 
         // Deactivate sensor.
