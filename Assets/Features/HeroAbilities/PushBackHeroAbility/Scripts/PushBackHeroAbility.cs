@@ -37,6 +37,7 @@ public class PushBackHeroAbility : MonoBehaviour
 		
 		if (GameData.Instance.abilityAvailable.Value == true)
 		{
+			Debug.Log("PushBack works");
 			// To the future people: Implement a nicer way to access the enemies here.
 			AudioManager.instance.Play("PushbackAbility");
 			EnemyMovement[] allEnemies = Array.ConvertAll(GameObject.FindGameObjectsWithTag("Enemy"), (go) => go.GetComponent<EnemyMovement>());
