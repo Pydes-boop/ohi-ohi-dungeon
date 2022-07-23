@@ -6,4 +6,5 @@ using UnityEngine.EventSystems;
 public abstract class Sensor : MonoBehaviour
 {
     public IObservable<EventArgs> SensorTriggered;
+    public IObservable<PointerEventData> SensorIsPressed;
 }
