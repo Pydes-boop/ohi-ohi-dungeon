@@ -20,25 +20,24 @@ public class TestAbility : MonoBehaviour
     [SerializeField] private float allowedOffsetY = 0.1f;
 
     private float _startTime;
-    private Vector2[] _squarePoints = new Vector2[4];
+    private Vector2[] _squarePoints = new Vector2[5];
     private bool _actionStarted = false;
-    private int point = 0;
-    private bool[] pointsReached = new bool[4];
+    private int _point = 0;
+    private bool[] _pointsReached = new bool[5];
 
     private float _lastCall = 0.0f;
 
     private void Awake()
     {
         //initialize it to false
-        for (int i = 0; i <= 3; i++)
+        for (int i = 0; i <= 4; i++)
         {
-            pointsReached[i] = false;
+            _pointsReached[i] = false;
         }
     }
 
     private void Start()
     {
-
         _collider = GetComponent<Collider2D>();
         _collider.enabled = true;
         _activationCause = GetComponent<Sensor>();
@@ -49,36 +48,16 @@ public class TestAbility : MonoBehaviour
     //should honestly rather be called OnDrag or smth like that
     public void ActivateAbility(PointerEventData eventData)
     {
-        //limit succesive drags so that if its in the same position in succesive frames u dont get multiple 
-        //checkpoints checkd (DIRTY) alternative 1: check for position instead of time
-        //                           alternative 2: change how checkboundaries work maybe bool[] so everything needs to be true
+        //limit succesive drags 
         if (_lastCall + 0.25f < Time.time)
         {
             float relativeX = eventData.position.x / Screen.width;
             float relativeY = eventData.position.y / Screen.height;
-        
-            if (!_actionStarted)
-            {
-                Debug.Log("PosX:" + eventData.position.x / Screen.width);
-                Debug.Log("PosY:" + eventData.position.y / Screen.height);
-                //initialize it to false
-                for (int i = 0; i <= 3; i++)
-                {
-                    pointsReached[i] = false;
-                }
-            }
 
-            
-            if (point > 3)
+            if (_point > 4)
             {
                 Debug.Log("Cast Ability!!");
-                point = 0;
-                _actionStarted = false;
-                //initialize it to false
-                for (int i = 0; i <= 3; i++)
-                {
-                    pointsReached[i] = false;
-                }
+                ResetAction();
                 //Start Cooldown
             }
             CheckPosition(relativeX,relativeY);
@@ -86,46 +65,34 @@ public class TestAbility : MonoBehaviour
         else
         {
             _lastCall = Time.time;
-            point = 0;
-            _actionStarted = false;
-            //initialize it to false
-            for (int i = 0; i <= 3; i++)
-            {
-                pointsReached[i] = false;
-            }
+            ResetAction();
         }
         
     }
 
     private void CheckPosition(float x , float y)
     {
-        //Debug.Log("CurrentTime: " + Time.time + "StartTime" + _startTime);
-        
+
         //needs to potentionally go to update function or need to be IENUMERATOR
         if (Time.time >= _startTime + 50.5f)
         {
             Debug.Log("test");
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 5; i++)
             {
                 Debug.Log("Point " + i +": x " +_squarePoints[i].x + " Y: "+ _squarePoints[i].y);
             } 
 
             Debug.Log("Time is up");
-            _actionStarted = false;
-            point = 0;
-            for (int i = 0; i <= 3; i++)
-            {
-                pointsReached[i] = false;
-            }
+            ResetAction();
         }
         
         if (!_actionStarted)
         {
-            pointsReached[point] = true;
+            _pointsReached[_point] = true;
             SetSquarePoints(x,y);
-            for (int i = 0; i <= 3; i++)
+            for (int i = 0; i <= 4; i++)
             {
-                pointsReached[i] = false;
+                _pointsReached[i] = false;
             }
             _actionStarted = true;
         }
@@ -133,8 +100,8 @@ public class TestAbility : MonoBehaviour
         //Debug.Log("Checking Bounds-------------------" + "Point: " + point);
         if (CheckBounds(x,y))
         {
-            point++;
-            Debug.Log("Point: " + point);
+            _point++;
+            Debug.Log("Point: " + _point);
         }
 
     }
@@ -142,19 +109,19 @@ public class TestAbility : MonoBehaviour
     private bool CheckBounds(float x,float y)
     {   
         //check if its between x-off and x+off
-        if (_squarePoints[point].x <= x + allowedOffsetX && _squarePoints[point].x  >= x - allowedOffsetX)
+        if (_squarePoints[_point].x <= x + allowedOffsetX && _squarePoints[_point].x  >= x - allowedOffsetX)
         {
             //check if its between y-off and x+off
-            if (_squarePoints[point].y <= y + allowedOffsetY && _squarePoints[point].y >= y - allowedOffsetY)
+            if (_squarePoints[_point].y <= y + allowedOffsetY && _squarePoints[_point].y >= y - allowedOffsetY)
             {
-                Debug.Log("expected x: " + _squarePoints[point].x + "actual: " + x);
-                Debug.Log("expected y: " + _squarePoints[point].y + "actual: " + y);
+                Debug.Log("expected x: " + _squarePoints[_point].x + "actual: " + x);
+                Debug.Log("expected y: " + _squarePoints[_point].y + "actual: " + y);
                 //only return true if its at a new position
-                Debug.Log("Point: " + point + " "+pointsReached[point]);
-                if (!pointsReached[point])
+                Debug.Log("Point: " + _point + " "+_pointsReached[_point]);
+                if (!_pointsReached[_point])
                 {
                     Debug.Log("Test");
-                    pointsReached[point] = true;
+                    _pointsReached[_point] = true;
                     return true;
                 }
 
@@ -173,15 +140,25 @@ public class TestAbility : MonoBehaviour
         _squarePoints[1] = new Vector2(x ,y + yOff);
         _squarePoints[2] = new Vector2(x + xOff ,y + yOff);
         _squarePoints[3] = new Vector2(x + xOff ,y);
+        _squarePoints[4] = new Vector2(x, y);
         
-        
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 5; i++)
         {
             Debug.Log("Point " + i +": x " +_squarePoints[i].x + " Y: "+ _squarePoints[i].y);
         }
 
         _startTime = Time.time;
         //DrawPoints();
+    }
+
+    private void ResetAction()
+    {
+        _actionStarted = false;
+        _point = 0;
+        for (int i = 0; i <= 3; i++)
+        {
+            _pointsReached[i] = false;
+        }
     }
 
     private void DrawPoints()
