@@ -35,12 +35,7 @@ public class Coin : MonoBehaviour
     {
         GameData.Instance.IncreaseScore(value);
         animationController.PlayCollectedAnimation();
-        StartCoroutine(delaySFX());
-        Destroy(gameObject, 3.0f);
-    }
-
-    IEnumerator delaySFX() {
-        yield return new WaitForSeconds(.2f);
         AudioManager.instance.PlayOneShot("Coins");
+        Destroy(gameObject, 3.0f);
     }
 }

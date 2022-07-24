@@ -165,6 +165,8 @@ public class GestureRecognition : MonoBehaviour
         _collider.enabled = false;
         yield return new WaitForSeconds(timeUntilNextGesture);
         _collider.enabled = true;
+        triangleAbility.SetActive(false);
+        squareAbility.SetActive(false);
     }
 
     private bool CheckBounds(float x,float y)
