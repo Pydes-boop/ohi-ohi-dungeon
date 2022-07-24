@@ -33,6 +33,8 @@ public class MorningStarPhysicsController : MonoBehaviour
         _oldDrag = _rigidbody.drag;
 
         _audioSource = GetComponent<AudioSource>();
+
+        StartCoroutine(deactivateAfterTime(15));
     }
 
     private void Start()
@@ -72,7 +74,7 @@ public class MorningStarPhysicsController : MonoBehaviour
     {
         while (true)
         {
-            Debug.Log(_rigidbody.velocity.magnitude);
+            //Debug.Log(_rigidbody.velocity.magnitude);
             _audioSource.PlayOneShot(airSound, curve.Evaluate(_rigidbody.velocity.magnitude));
             yield return new WaitForSeconds(soundCooldown);
         }
@@ -86,5 +88,11 @@ public class MorningStarPhysicsController : MonoBehaviour
     private void OnDisable()
     {
         StopCoroutine(_soundCoroutine);
+    }
+    
+    private IEnumerator deactivateAfterTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        this.gameObject.transform.parent.gameObject.SetActive(false);
     }
 }

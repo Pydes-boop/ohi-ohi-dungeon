@@ -76,13 +76,13 @@ public class TestAbility : MonoBehaviour
         //needs to potentionally go to update function or need to be IENUMERATOR
         if (Time.time >= _startTime + 50.5f)
         {
-            Debug.Log("test");
+            //Debug.Log("test");
             for (int i = 0; i < 5; i++)
             {
-                Debug.Log("Point " + i +": x " +_squarePoints[i].x + " Y: "+ _squarePoints[i].y);
+                //Debug.Log("Point " + i +": x " +_squarePoints[i].x + " Y: "+ _squarePoints[i].y);
             } 
 
-            Debug.Log("Time is up");
+            //Debug.Log("Time is up");
             ResetAction();
         }
         
@@ -101,7 +101,7 @@ public class TestAbility : MonoBehaviour
         if (CheckBounds(x,y))
         {
             _point++;
-            Debug.Log("Point: " + _point);
+            //Debug.Log("Point: " + _point);
         }
 
     }
@@ -114,13 +114,13 @@ public class TestAbility : MonoBehaviour
             //check if its between y-off and x+off
             if (_squarePoints[_point].y <= y + allowedOffsetY && _squarePoints[_point].y >= y - allowedOffsetY)
             {
-                Debug.Log("expected x: " + _squarePoints[_point].x + "actual: " + x);
-                Debug.Log("expected y: " + _squarePoints[_point].y + "actual: " + y);
+                //Debug.Log("expected x: " + _squarePoints[_point].x + "actual: " + x);
+                //Debug.Log("expected y: " + _squarePoints[_point].y + "actual: " + y);
                 //only return true if its at a new position
-                Debug.Log("Point: " + _point + " "+_pointsReached[_point]);
+                //Debug.Log("Point: " + _point + " "+_pointsReached[_point]);
                 if (!_pointsReached[_point])
                 {
-                    Debug.Log("Test");
+                    //Debug.Log("Test");
                     _pointsReached[_point] = true;
                     return true;
                 }
@@ -144,7 +144,7 @@ public class TestAbility : MonoBehaviour
         
         for (int i = 0; i < 5; i++)
         {
-            Debug.Log("Point " + i +": x " +_squarePoints[i].x + " Y: "+ _squarePoints[i].y);
+            //Debug.Log("Point " + i +": x " +_squarePoints[i].x + " Y: "+ _squarePoints[i].y);
         }
 
         _startTime = Time.time;
@@ -163,12 +163,13 @@ public class TestAbility : MonoBehaviour
 
     private void DrawPoints()
     {
+        Debug.Log("DRAW POINTS");
         GameObject img1 = new GameObject("Point 1");
         RectTransform rect1 = img1.AddComponent<RectTransform>();
         rect1.transform.SetParent(canvas.transform);
         rect1.sizeDelta = new Vector2((float)(0.05 * Screen.width), (float)(0.05 * Screen.height));
         Image image = img1.AddComponent<Image>();
-        //Texture2D tex = Resources.Load<Texture2D>("red");
+        image.sprite = Resources.Load<Sprite>("red");
         img1.transform.SetParent(canvas.transform);
     }
 
