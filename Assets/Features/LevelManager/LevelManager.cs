@@ -23,10 +23,7 @@ public class LevelManager : MonoBehaviour
     private IEnumerator ManageDifficultyLevels()
     {
         yield return new WaitForSeconds(initialTimeout);
-        
-        //Start Ost
-        AudioManager.instance.Play("GameOST");
-        
+
         var i = 0;
         while (true)
         {

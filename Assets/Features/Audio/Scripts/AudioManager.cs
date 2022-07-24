@@ -1,33 +1,39 @@
 using System;
 using System.Collections;
+using DyrdaDev.Singleton;
 using UnityEngine;
+using UnityEngine.Audio;
 
-public class AudioManager : MonoBehaviour {
+public class AudioManager : SingletonMonoBehaviour<AudioManager> {
     
     public Sound[] sounds;
 
-    public static AudioManager instance;
-
-    private void Awake() {
-
-        if (instance == null)
-            instance = this;
-        else {
-            Destroy(gameObject);
-            return;
-        }
-
-        transform.parent = null;    //So you can group it under "MANAGEMENT"
-        DontDestroyOnLoad(gameObject);
+    public AudioMixer masterMixer;
+    
+    
+    /// ------ Setup ------
+    
+    protected override void Awake()
+    {
+        base.Awake();
         
         foreach (var sound in sounds) {
             sound.source = gameObject.AddComponent<AudioSource>();
 
-            sound.source.clip = sound.clip;
+            sound.source.clip = sound.clips[0];
             sound.source.volume = sound.volume;
             sound.source.pitch = sound.pitch;
             sound.source.loop = sound.loop;
 
+            AudioMixerGroup group = masterMixer.FindMatchingGroups(sound.mixerGroup)[0];
+            if (group != null)
+                sound.source.outputAudioMixerGroup = group;
+            else
+            {
+                Debug.LogWarning(sound.name + " does not have a mixer group. It was added to the group Other");
+                sound.source.outputAudioMixerGroup = masterMixer.FindMatchingGroups("Other")[0];
+            }
+            
             if (sound.Spatial) {
                 sound.source.spatialBlend = 1;
                 sound.source.panStereo = sound.pan;
@@ -38,8 +44,72 @@ public class AudioManager : MonoBehaviour {
                 Debug.LogWarning("No Sound Clip found for " + sound.name);
             }
         }
+    }  
+    
+
+    private void Start()
+    {
+        Play("MenuOST");
+    }
+    
+    /// ------ Mixer Functions ------
+    
+    public void AdjustMasterVolume(float level, float maxLevel)
+    {
+        AdjustMixer("MasterVolume", level, maxLevel);
     }
 
+    public void AdjustMusicVolume(float level, float maxLevel)
+    {
+        AdjustMixer("MusicVolume", level, maxLevel);
+    }
+    
+    public void AdjustSoundsVolume(float level, float maxLevel)
+    {
+        AdjustMixer("SoundsVolume", level, maxLevel);
+    }
+    
+    public void AdjustEnemiesVolume(float level, float maxLevel)
+    {
+        AdjustMixer("EnemiesVolume", level, maxLevel);
+    }
+
+    public void AdjustWorldVolume(float level, float maxLevel)
+    {
+        AdjustMixer("WorldVolume", level, maxLevel);
+    }
+    
+    public void AdjustPlayerVolume(float level, float maxLevel)
+    {
+        AdjustMixer("PlayerVolume", level, maxLevel);
+    }
+    
+    public void AdjustUIVolume(float level, float maxLevel)
+    {
+        AdjustMixer("UIVolume", level, maxLevel);
+    }
+    
+    public void AdjustOtherVolume(float level, float maxLevel)
+    {
+        AdjustMixer("OtherVolume", level, maxLevel);
+    }
+    
+    private void AdjustMixer(string name, float level, float maxLevel)
+    {
+        if (level <= 0)
+        {
+            masterMixer.SetFloat(name, -80);
+        }
+        else
+        {
+            //Default Operation for Calculating actual Decibel Values for Audio Levels
+            masterMixer.SetFloat(name,  20 * (float) Math.Log10(level / maxLevel));
+        }
+    }
+
+
+    /// ------ Audio Source Functions ------
+    
     public void Play(string name) {
         Sound sound = Array.Find(sounds, sound => sound.name == name);
         if (sound == null) {
@@ -76,8 +146,8 @@ public class AudioManager : MonoBehaviour {
             Debug.LogWarning("Didn't find sound: " + name);
             return;
         }
-        if(sound.clip != null)
-            sound.source.PlayOneShot(sound.clip);
+        if(sound.clips != null)
+            sound.source.PlayOneShot(sound.clips[UnityEngine.Random.Range(0, sound.clips.Length)]);
     }
 
     public void ChangeVolume(string name, float newVolume) {
@@ -128,6 +198,8 @@ public class AudioManager : MonoBehaviour {
         }
         sound.source.panStereo += adjustBy;
     }
+    
+    /// ------ Step Sounds ------
 
     public void StartCharacterStepSounds()
     {
@@ -136,7 +208,7 @@ public class AudioManager : MonoBehaviour {
     
     private IEnumerator stepsWhileWalkingOnScene()
     {
-        AudioManager.instance.ChangePan("Steps", 1);
+        ChangePan("Steps", 1);
         for (int i = 0; i < 8; i++)
         {
             ChangePanRelative("Steps", -(1/(float)8));

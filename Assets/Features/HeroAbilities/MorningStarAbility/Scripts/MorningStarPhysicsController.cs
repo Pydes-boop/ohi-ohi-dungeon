@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
+using UnityEditor.IMGUI.Controls;
 using UnityEngine.EventSystems;
 
 public class MorningStarPhysicsController : MonoBehaviour
@@ -13,26 +14,23 @@ public class MorningStarPhysicsController : MonoBehaviour
     [SerializeField] private float force;
     [SerializeField] private float groundingVelocity;
     [SerializeField] private float groundDrag;
-    
-    [Header("Audio")]
+
+    [Header("Audio")] 
+    [SerializeField] private string soundName;
     [SerializeField] private float soundCooldown;
-    [SerializeField] private AudioClip airSound;
-    [SerializeField] private AnimationCurve curve;
+    [SerializeField] private AnimationCurve PitchCurve;
 
     private Rigidbody2D _rigidbody;
     private float _oldDrag;
 
     private bool _dragged = false;
 
-    private AudioSource _audioSource;
     private Coroutine _soundCoroutine;
     
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _oldDrag = _rigidbody.drag;
-
-        _audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -66,14 +64,16 @@ public class MorningStarPhysicsController : MonoBehaviour
     private void OnDrag(PointerEventData data)
     {
         _rigidbody.AddForce((_rigidbody.position - (Vector2)stick.transform.position).normalized * force * Time.deltaTime);
+        AudioManager.Instance.ChangePitch(soundName, PitchCurve.Evaluate(evaluatePitchCurve()));
+        AudioManager.Instance.ChangeVolume(soundName, PitchCurve.Evaluate(evaluatePitchCurve()));
     }
 
     private IEnumerator SoundPlayer()
     {
         while (true)
         {
-            //Debug.Log(_rigidbody.velocity.magnitude);
-            _audioSource.PlayOneShot(airSound, curve.Evaluate(_rigidbody.velocity.magnitude));
+            //using some magic here to get some nice numbers for pitch and volume
+            AudioManager.Instance.Play(soundName);
             yield return new WaitForSeconds(soundCooldown);
         }
     }
@@ -81,10 +81,17 @@ public class MorningStarPhysicsController : MonoBehaviour
     private void OnEnable()
     {
         _soundCoroutine = StartCoroutine(SoundPlayer());
+        AudioManager.Instance.ChangePitch(soundName, evaluatePitchCurve());
+        AudioManager.Instance.ChangeVolume(soundName, evaluatePitchCurve());
     }
 
     private void OnDisable()
     {
         StopCoroutine(_soundCoroutine);
+    }
+
+    private float evaluatePitchCurve()
+    {
+        return PitchCurve.Evaluate(_rigidbody.velocity.magnitude / 35);
     }
 }

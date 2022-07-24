@@ -35,7 +35,7 @@ public class Coin : MonoBehaviour
     {
         GameData.Instance.IncreaseScore(value);
         animationController.PlayCollectedAnimation();
-        AudioManager.instance.PlayOneShot("Coins");
+        AudioManager.Instance.PlayOneShot("Coins");
         Destroy(gameObject, 3.0f);
     }
 }

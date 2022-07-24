@@ -5,9 +5,9 @@ using UnityEngine;
 public class Sound {
 
     public string name;
-    
-    public AudioClip clip;
-    
+
+    public string mixerGroup;
+
     [Range(0f, 1f)]
     public float volume;
     
@@ -17,7 +17,6 @@ public class Sound {
     public bool loop;
 
     [Header("3D Settings")]
-
     public bool Spatial = false;
 
     [Range(-1f, 1f)]
@@ -25,5 +24,8 @@ public class Sound {
 
     [HideInInspector]
     public AudioSource source;
+    
+    [SerializeField]
+    public AudioClip[] clips;
 
 }

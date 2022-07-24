@@ -43,7 +43,7 @@ public class PlayerTap : DamageCause// TODO remove comments and rename class
         {
             Vector3 pos = _camera.ScreenToWorldPoint(((SensorEventArgs)args).associatedPointerPayload.position);
             Instantiate(damageVFX, new Vector3(pos.x, pos.y, damageVFX.transform.position.z), Quaternion.identity);
-            AudioManager.instance.PlayOneShot("Explosion");
+            AudioManager.Instance.PlayOneShot("Explosion");
         }
     }
 }
