@@ -17,3 +17,10 @@ This package contains third-party content governed by the license(s) indicated b
 - __Created by:__ [Luis Zuno](http://pixelgameart.org)
 - __More information:__ You can find more information on the corresponding project web page [pixelgameart.org](http://pixelgameart.org/web/portfolio/explosion-animations-pack/) or [on ansimuz.itch.io](https://ansimuz.itch.io/explosion-animations-pack).
 - __Comment:__ Some explosion sprites used in this project are from the "Explosion Animations Pack" by Luis Zuno.
+
+## "The Essential Retro Video Game Sound Effects Collection" by Juhani Junkala (SubspaceAudio)
+
+- __Project:__ [512 8-bit sound effects](https://opengameart.org/comment/55104)
+- __License Type:__ [CC0 1.0 Universal (CC0 1.0)](https://creativecommons.org/publicdomain/zero/1.0/)
+- __Created by:__ [Juhani Junkala](https://juhanijunkala.com/)
+- __Comment:__ Some Sounds are from this pack, mainly coin, weapon and explosion
