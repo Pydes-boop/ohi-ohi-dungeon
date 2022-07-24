@@ -20,6 +20,8 @@ public class ShadowKnightMovement : MonoBehaviour
     private void OnEnable()
     {
         transform.position = _startPoint;
+        AudioManager.Instance.AdjustLowPass(300f);
+        StartCoroutine(waitTime(4f));
     }
 
     void Update()
@@ -52,5 +54,11 @@ public class ShadowKnightMovement : MonoBehaviour
         Vector3 scale = transform.localScale;
         scale.x = (movement.x < 0 || movement.y < 0 ? -1 : 1) * Mathf.Abs(scale.x);
         transform.localScale = scale;
+    }
+
+    private IEnumerator waitTime(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        AudioManager.Instance.AdjustLowPass(22000);
     }
 }

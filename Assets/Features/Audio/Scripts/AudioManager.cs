@@ -56,45 +56,50 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager> {
     
     public void AdjustMasterVolume(float level, float maxLevel)
     {
-        AdjustMixer("MasterVolume", level, maxLevel);
+        AdjustMixerVolume("MasterVolume", level, maxLevel);
     }
 
     public void AdjustMusicVolume(float level, float maxLevel)
     {
-        AdjustMixer("MusicVolume", level, maxLevel);
+        AdjustMixerVolume("MusicVolume", level, maxLevel);
     }
     
     public void AdjustSoundsVolume(float level, float maxLevel)
     {
-        AdjustMixer("SoundsVolume", level, maxLevel);
+        AdjustMixerVolume("SoundsVolume", level, maxLevel);
     }
     
     public void AdjustEnemiesVolume(float level, float maxLevel)
     {
-        AdjustMixer("EnemiesVolume", level, maxLevel);
+        AdjustMixerVolume("EnemiesVolume", level, maxLevel);
     }
 
     public void AdjustWorldVolume(float level, float maxLevel)
     {
-        AdjustMixer("WorldVolume", level, maxLevel);
+        AdjustMixerVolume("WorldVolume", level, maxLevel);
     }
     
     public void AdjustPlayerVolume(float level, float maxLevel)
     {
-        AdjustMixer("PlayerVolume", level, maxLevel);
+        AdjustMixerVolume("PlayerVolume", level, maxLevel);
     }
     
     public void AdjustUIVolume(float level, float maxLevel)
     {
-        AdjustMixer("UIVolume", level, maxLevel);
+        AdjustMixerVolume("UIVolume", level, maxLevel);
     }
     
     public void AdjustOtherVolume(float level, float maxLevel)
     {
-        AdjustMixer("OtherVolume", level, maxLevel);
+        AdjustMixerVolume("OtherVolume", level, maxLevel);
     }
     
-    private void AdjustMixer(string name, float level, float maxLevel)
+    public void AdjustLowPass(float value)
+    {
+        AdjustMixer("GeneralLowpass", value);
+    }
+    
+    private void AdjustMixerVolume(string name, float level, float maxLevel)
     {
         if (level <= 0)
         {
@@ -105,6 +110,11 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager> {
             //Default Operation for Calculating actual Decibel Values for Audio Levels
             masterMixer.SetFloat(name,  20 * (float) Math.Log10(level / maxLevel));
         }
+    }
+    
+    private void AdjustMixer(string name, float value)
+    {
+        masterMixer.SetFloat(name,  value);
     }
 
 
@@ -146,6 +156,7 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager> {
             Debug.LogWarning("Didn't find sound: " + name);
             return;
         }
+
         if(sound.clips != null)
             sound.source.PlayOneShot(sound.clips[UnityEngine.Random.Range(0, sound.clips.Length)]);
     }
@@ -216,4 +227,5 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager> {
             yield return new WaitForSeconds(.4f);
         }
     }
+
 }
