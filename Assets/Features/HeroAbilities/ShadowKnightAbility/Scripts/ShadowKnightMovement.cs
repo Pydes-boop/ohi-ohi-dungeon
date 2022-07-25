@@ -20,7 +20,7 @@ public class ShadowKnightMovement : MonoBehaviour
     private void OnEnable()
     {
         transform.position = _startPoint;
-        AudioManager.Instance.AdjustLowPass(300f);
+        AudioManager.Instance.AdjustLowPass(2000f);
         StartCoroutine(waitTime(4f));
     }
 

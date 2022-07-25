@@ -26,7 +26,10 @@ public class PlayerTap : DamageCause// TODO remove comments and rename class
     {
         // _sensor.SensorTriggered.Subscribe(DamageCauseSignalDetected).AddTo(this);
         foreach (var sensor in _sensors)
-            sensor.SensorTriggered.Subscribe(DamageCauseSignalDetected).AddTo(this);
+        {
+            if (typeof(PointerDragSensor) != sensor.GetType())
+                sensor.SensorTriggered.Subscribe(DamageCauseSignalDetected).AddTo(this);
+        }
     }
 
     public void DamageCauseSignalDetected(EventArgs args)

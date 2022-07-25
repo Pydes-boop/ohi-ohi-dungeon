@@ -162,9 +162,9 @@ public class GestureRecognition : MonoBehaviour
     
     private IEnumerator StartCooldown()
     {
-        _collider.enabled = false;
+        //_collider.enabled = false;
         yield return new WaitForSeconds(timeUntilNextGesture);
-        _collider.enabled = true;
+        //_collider.enabled = true;
         triangleAbility.SetActive(false);
         squareAbility.SetActive(false);
     }

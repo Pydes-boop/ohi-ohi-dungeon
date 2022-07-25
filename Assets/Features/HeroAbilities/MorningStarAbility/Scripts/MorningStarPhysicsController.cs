@@ -1,10 +1,7 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
-using UnityEditor.IMGUI.Controls;
 using UnityEngine.EventSystems;
 
 public class MorningStarPhysicsController : MonoBehaviour
