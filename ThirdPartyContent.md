@@ -24,3 +24,10 @@ This package contains third-party content governed by the license(s) indicated b
 - __License Type:__ [CC0 1.0 Universal (CC0 1.0)](https://creativecommons.org/publicdomain/zero/1.0/)
 - __Created by:__ [Juhani Junkala](https://juhanijunkala.com/)
 - __Comment:__ Some Sounds are from this pack, mainly coin, weapon and explosion
+
+## "Air Move" Morning Star Sound by Almitory
+
+- __Project:__ [FreeSound Air Move](https://freesound.org/people/Almitory/sounds/626136/)
+- __License Type:__ [CC0 1.0 Universal (CC0 1.0)](https://creativecommons.org/publicdomain/zero/1.0/)
+- __Created by:__ [Almitory](https://freesound.org/people/Almitory/)
+- __Comment:__ Only used for the Morning Star Sound
