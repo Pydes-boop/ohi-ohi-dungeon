@@ -14,10 +14,7 @@ public class PlayerTap : DamageCause// TODO remove comments and rename class
     [Header("VFX")]
     public GameObject damageVFX;
     private Camera _camera;
-
-    [Header("SFX")] 
-    public AudioClip[] explosionsSFX;
-
+    
     private void Awake()
     {
         _camera = Camera.main;
