@@ -48,9 +48,13 @@ public class MorningStarPhysicsController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        AudioManager.Instance.ChangePitch(soundName, PitchCurve.Evaluate(evaluatePitchCurve()));
+        AudioManager.Instance.ChangeVolume(soundName, PitchCurve.Evaluate(evaluatePitchCurve()));
+        
         if (_dragged)
             return;
-        
+
+
         if (_rigidbody.velocity.sqrMagnitude < groundingVelocity * groundingVelocity)
         {
             _rigidbody.drag = groundDrag;
@@ -61,8 +65,6 @@ public class MorningStarPhysicsController : MonoBehaviour
     private void OnDrag(PointerEventData data)
     {
         _rigidbody.AddForce((_rigidbody.position - (Vector2)stick.transform.position).normalized * force * Time.deltaTime);
-        AudioManager.Instance.ChangePitch(soundName, PitchCurve.Evaluate(evaluatePitchCurve()));
-        AudioManager.Instance.ChangeVolume(soundName, PitchCurve.Evaluate(evaluatePitchCurve()));
     }
 
     private IEnumerator SoundPlayer()
