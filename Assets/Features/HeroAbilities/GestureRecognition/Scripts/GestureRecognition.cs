@@ -17,6 +17,7 @@ public class GestureRecognition : MonoBehaviour
     
     private PointerDragSensor _dragSensor;
     private PointerDownSensor _downSensor;
+    private PointerUpSensor _upSensor;
     private BoxCollider2D _collider;
 
     public GameObject particleSystem;
@@ -40,12 +41,15 @@ public class GestureRecognition : MonoBehaviour
 
     private List<GameObject> _abilityPoints = new List<GameObject>();
 
+    [SerializeField] private float dragTimer = 0.2f;
+
     private void Awake()
     {
         _collider = GetComponent<BoxCollider2D>();
         _collider.enabled = true;
         _dragSensor = GetComponent<PointerDragSensor>();
         _downSensor = GetComponent<PointerDownSensor>();
+        _upSensor = GetComponent<PointerUpSensor>();
         
         if(_collider == null)
             Debug.LogError("Gesture Recognition needs a Collider to function!");
@@ -65,12 +69,27 @@ public class GestureRecognition : MonoBehaviour
         _cooldownTimer = 0;
     }
 
+    private Coroutine _coroutine;
+    
     private void Start()
     {
-        _downSensor.SensorTriggered.Subscribe(startAbility).AddTo(this);
+        _downSensor.SensorTriggered.Subscribe(e =>
+        {
+            _coroutine = StartCoroutine(DragCooldown(e, dragTimer));
+        }).AddTo(this);
         _dragSensor.SensorIsPressed.Subscribe(ActivateAbility).AddTo(this);
+        _upSensor.SensorTriggered.Subscribe(e =>
+        {
+            StopCoroutine(_coroutine);
+        }).AddTo(this);
     }
 
+    private IEnumerator DragCooldown(EventArgs e, float cooldown)
+    {
+        yield return new WaitForSeconds(cooldown);
+        startAbility(e);
+    }
+    
     private void Update()
     {
         //EventTimer resets our gesture input and counts down as soon as we stop pressing
@@ -238,7 +257,7 @@ public class GestureRecognition : MonoBehaviour
         _pointsReached.Add(false);
         _pointsReached.Add(false);
         _pointsReached.Add(false);
-        drawPoints();
+        Invoke(nameof(drawPoints), 0.01f);
     }
     
     private void SetTrianglePoints(float x,float y)
@@ -252,7 +271,7 @@ public class GestureRecognition : MonoBehaviour
         _pointsReached.Add(false);
         _pointsReached.Add(false);
         _pointsReached.Add(false);
-        drawPoints();
+        Invoke(nameof(drawPoints), 0.01f);
     }
 
     private void ResetAction()
