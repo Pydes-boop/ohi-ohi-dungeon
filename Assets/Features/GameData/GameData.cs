@@ -2,6 +2,7 @@
 using UnityEngine;
 using DyrdaDev.Singleton;
 using UniRx;
+using System.Collections.Generic;
 using Random = System.Random;
 
 public class GameData : SingletonMonoBehaviour<GameData>
@@ -14,13 +15,23 @@ public class GameData : SingletonMonoBehaviour<GameData>
     }
 
     public ReactiveProperty<int> score = new ReactiveProperty<int>(0);
-    public ReactiveProperty<bool> abilityAvailable = new ReactiveProperty<bool>(false);
-   
+    
+    //TODO for future developers, reformat this and make it nicer for more abiliities
+    private Dictionary<String, ReactiveProperty<bool>> abilitiesAvailable =
+        new Dictionary<string, ReactiveProperty<bool>>();
+
+    private ReactiveProperty<bool> pushBackAbilityAvailable = new ReactiveProperty<bool>(false);
+    private ReactiveProperty<bool> morningStarAbilityAvailable = new ReactiveProperty<bool>(false);
+    private ReactiveProperty<bool> shadowAbilityAvailable = new ReactiveProperty<bool>(false);
+
     [HideInInspector] public LevelTheme currentLevelTheme;
     private Random LevelThemeRandom = new Random();
 
     public void Awake()
     {
+        abilitiesAvailable.Add("PushBack", pushBackAbilityAvailable);
+        abilitiesAvailable.Add("MorningStar", morningStarAbilityAvailable);
+        abilitiesAvailable.Add("Shadow", shadowAbilityAvailable);
         currentLevelTheme = GetRandomLevelTheme();
     }
 
@@ -34,9 +45,34 @@ public class GameData : SingletonMonoBehaviour<GameData>
         score.Value = 0;
     }
 
-    public void SetAbilityAvailable(bool value)
+    public void SetAbilityAvailable(string abilityName, bool value)
     {
-        abilityAvailable.Value = value;
+        if (!abilitiesAvailable.ContainsKey(abilityName))
+        {
+            Debug.LogError(abilityName + " cant be set to " + value + " as the key doesnt exist. Add the necessary key and ReactiveProperty to GameData.");
+        }
+        
+        abilitiesAvailable[abilityName].Value = value;
+    }
+    
+    public bool GetAbilityAvailable(string abilityName)
+    {
+        if (!abilitiesAvailable.ContainsKey(abilityName))
+        {
+            Debug.LogError(abilityName + " cant be found as the key doesnt exist. Add the necessary key and ReactiveProperty to GameData.");
+        }
+
+        return abilitiesAvailable[abilityName].Value;
+    }
+    
+    public ReactiveProperty<bool> GetAbilityAvailableReactiveProperty(string abilityName)
+    {
+        if (!abilitiesAvailable.ContainsKey(abilityName))
+        {
+            Debug.LogError(abilityName + " cant be found as the key doesnt exist. Add the necessary key and ReactiveProperty to GameData.");
+        }
+
+        return abilitiesAvailable[abilityName];
     }
 
 

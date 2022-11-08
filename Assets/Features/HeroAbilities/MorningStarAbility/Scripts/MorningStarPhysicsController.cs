@@ -42,7 +42,7 @@ public class MorningStarPhysicsController : MonoBehaviour
                 _rigidbody.drag = _oldDrag;
             })
             .AddTo(this);
-        hitBox.AddComponent<ObservablePointerUpTrigger>().OnPointerUpAsObservable().Subscribe(_ => _dragged = true)
+        hitBox.GetComponent<ObservablePointerUpTrigger>().OnPointerUpAsObservable().Subscribe(_ => _dragged = true)
             .AddTo(this);
     }
 
