@@ -15,6 +15,9 @@ Enter dangerous dungeons with your little companion. Fight demons, orcs, and the
     <br>
 </p>
 
+# The Audio Update!
+
+As part of a student project we implemented the Audio Update with new weapons and interactions into Ohi Ohi Dungeon. You can try it on [itch.io](https://github.com/Pydes-boop/ohi-ohi-dungeon)
 
 ## License & Third-Party Content
 
