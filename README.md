@@ -38,3 +38,7 @@ If you want to contribute to this project, you are welcome to do so. Just leave 
         <img src="./Media/Bosses/all_bosses_idle_2.gif" alt="Bosses from the game Ohi Ohi Dungeon"/>
     </a>
 </p>
+
+## Gameplay
+
+https://github.com/Pydes-boop/ohi-ohi-dungeon/assets/59734957/df93b79d-4eaf-4e21-a57d-64d8df8715ec
